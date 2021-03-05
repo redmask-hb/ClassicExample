@@ -5,34 +5,38 @@
 
 
 func reConstructBinaryTree( pre []int ,  vin []int ) *TreeNode {
-  index:=0
+    index:=0
 	cp:=&index
-	return buildTree(pre, vin, cp)
+	return buildTree(&pre, &vin, cp)
 }
 
-func buildTree(pre []int, vin []int, index *int) *TreeNode {
-    if len(vin)==0{
-        return nil
-    }
-	value := pre[*index]
-	node := &TreeNode{Val: value}    
-    if *index<len(pre)-1 {
-		*index++
+func reConstructBinaryTree( pre []int ,  vin []int ) *TreeNode {
+	index:=0
+	cp:=&index
+	return buildTree(&pre, &vin, cp)
+}
+
+func buildTree(pre *[]int, vin *[]int, index *int) *TreeNode {
+	if len(*vin)==0{
+		return nil
 	}
-	if len(vin)>1 {
+	value := (*pre)[*index]
+	node := &TreeNode{Val: value}
+	*index++
+	lenVin:=len(*vin)
+	if lenVin>1 {
 		tag := 0
-		for k, v := range vin {
+		for k, v := range *vin {
 			if v == value {
 				tag = k
 			}
-		}		
-		leftVin := vin[:tag]
-		node.Left = buildTree(pre, leftVin, index)
-		if tag < len(vin) {
-				rightVin := vin[tag+1:]
-				node.Right = buildTree(pre, rightVin, index)
+		}
+		leftVin := (*vin)[:tag]
+		node.Left = buildTree(pre, &leftVin, index)
+		if tag < lenVin {
+			rightVin := (*vin)[tag+1:]
+			node.Right = buildTree(pre, &rightVin, index)
 		}
 	}
 	return node
 }
-
